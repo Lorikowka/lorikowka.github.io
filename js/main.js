@@ -13,7 +13,7 @@ const CONFIG = {
   BACKEND_URL: 'https://your-backend-url.vercel.app',
   
   // Ссылка на оплату DIKIDI
-  DIKIDI_PAYMENT_LINK: 'https://pay.dikidi.ru/YOUR_LINK_HERE',
+  DIKIDI_PAYMENT_LINK: 'https://dkd.su/2042105/s/22074950',
   
   // Таймауты
   FETCH_TIMEOUT: 10000,
@@ -22,7 +22,9 @@ const CONFIG = {
   ALLOWED_EXTERNAL_DOMAINS: [
     't.me',
     'yookassa.ru',
-    'pay.dikidi.ru'
+    'pay.dikidi.ru',
+    'dikidi.ru',
+    'dkd.su'
   ]
 };
 
@@ -208,14 +210,19 @@ function handleDikidiPay() {
     );
     return;
   }
-  
-  // Проверяем безопасность URL
-  if (!CONFIG.DIKIDI_PAYMENT_LINK.includes('dikidi.ru')) {
+
+  // Проверяем безопасность URL (dikidi.ru, dkd.su — это DIKIDI)
+  const dikidiDomains = ['dikidi.ru', 'dkd.su', 'pay.dikidi.ru'];
+  const isDikidiUrl = dikidiDomains.some(domain => 
+    CONFIG.DIKIDI_PAYMENT_LINK.includes(domain)
+  );
+
+  if (!isDikidiUrl) {
     console.error('⚠️ Неверная ссылка DIKIDI');
     alert('Ошибка конфигурации. Обратитесь к администратору.');
     return;
   }
-  
+
   // Открываем платёжную страницу Dikidi в новой вкладке
   openExternalSafely(CONFIG.DIKIDI_PAYMENT_LINK);
 }
