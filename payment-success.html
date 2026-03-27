@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Оплата прошла успешно — Екатерина Князькова</title>
+  
+  <!-- 🔒 Security Headers (Meta) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    .success-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #eef6f0 0%, #d6eddf 100%);
+      padding: 40px 20px;
+    }
+    .success-card {
+      background: white;
+      border-radius: 20px;
+      padding: 48px;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    }
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, #0098f0 0%, #0066b1 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      color: white;
+      animation: successPop 0.6s ease-out;
+    }
+    @keyframes successPop {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .success-card h1 {
+      font-family: 'Playfair Display', serif;
+      color: #1f5f44;
+      margin: 0 0 16px;
+      font-size: 32px;
+    }
+    .success-card p {
+      color: #666;
+      line-height: 1.6;
+      margin: 0 0 32px;
+    }
+    .success-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .success-actions .primary-btn {
+      text-align: center;
+    }
+    .status-info {
+      background: #f8f8f8;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 24px;
+      text-align: left;
+    }
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+    .status-row:last-child {
+      border-bottom: none;
+    }
+    .status-label {
+      color: #888;
+    }
+    .status-value {
+      font-weight: 500;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="success-page">
+    <div class="success-card">
+      <div class="success-icon">✓</div>
+      <h1>Оплата прошла успешно!</h1>
+      <p>
+        Спасибо за оплату консультации. Специалист получит уведомление 
+        и свяжется с вами в ближайшее время для подтверждения записи.
+      </p>
+      
+      <div class="success-actions">
+        <a class="primary-btn" href="https://t.me/Ekaterina_K" target="_blank" rel="noopener noreferrer">
+          Написать специалисту
+        </a>
+        <a class="primary-btn" href="index.html" style="background: #666;">
+          Вернуться на сайт
+        </a>
+      </div>
+
+      <div class="status-info" id="statusInfo" style="display: none;">
+        <div class="status-row">
+          <span class="status-label">Статус:</span>
+          <span class="status-value" id="paymentStatus">Проверка...</span>
+        </div>
+        <div class="status-row">
+          <span class="status-label">Сумма:</span>
+          <span class="status-value" id="paymentAmount">3500 ₽</span>
+        </div>
+        <div class="status-row">
+          <span class="status-label">ID платежа:</span>
+          <span class="status-value" id="paymentId">—</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Получаем параметры из URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentId = urlParams.get('paymentId');
+
+    // Функция безопасной проверки URL
+    function isSafeBackendUrl(url) {
+      try {
+        const parsed = new URL(url);
+        return parsed.protocol === 'https:' && 
+               (parsed.hostname.includes('vercel.app') || 
+                parsed.hostname.includes('railway.app') ||
+                parsed.hostname === 'api.psixolog-site.ru');
+      } catch {
+        return false;
+      }
+    }
+
+    // Если есть paymentId, проверяем статус
+    if (paymentId) {
+      document.getElementById('statusInfo').style.display = 'block';
+      document.getElementById('paymentId').textContent = paymentId;
+
+      // Запрос к backend для проверки статуса
+      const BACKEND_URL = 'https://your-backend-url.ru'; // ← Заменить на URL сервера
+
+      // Проверяем безопасность URL перед запросом
+      if (isSafeBackendUrl(BACKEND_URL)) {
+        fetch(`${BACKEND_URL}/api/payment-status/${paymentId}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              const statusMap = {
+                'succeeded': '✅ Успешно',
+                'pending': '⏳ Ожидает оплаты',
+                'canceled': '❌ Отменён',
+                'waiting_for_capture': '⏳ Обрабатывается'
+              };
+              document.getElementById('paymentStatus').textContent = 
+                statusMap[data.status] || data.status;
+              document.getElementById('paymentAmount').textContent = 
+                `${data.amount} ₽`;
+            }
+          })
+          .catch(err => {
+            console.error('Ошибка проверки статуса:', err);
+            document.getElementById('paymentStatus').textContent = 'Неизвестно';
+          });
+      } else {
+        console.error('⚠️ Небезопасный Backend URL');
+        document.getElementById('paymentStatus').textContent = 'Ошибка конфигурации';
+      }
+    }
+  </script>
+</body>
+</html>
