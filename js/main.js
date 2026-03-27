@@ -114,7 +114,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // ——————————————————————————————
 // ОПЛАТА ЧЕРЕЗ ЮKASSA (BACKEND)
 // ——————————————————————————————
-async function handleYooKassaPay() {
+/*async function handleYooKassaPay() {
   const button = event.target.closest('button');
   const originalText = button.innerHTML;
   
@@ -196,7 +196,7 @@ async function handleYooKassaPay() {
     button.style.opacity = '1';
   }
 }
-
+*/
 // ——————————————————————————————
 // ОПЛАТА ЧЕРЕЗ DIKIDI
 // ——————————————————————————————
@@ -225,17 +225,6 @@ function handleDikidiPay() {
 
   // Открываем платёжную страницу Dikidi в новой вкладке
   openExternalSafely(CONFIG.DIKIDI_PAYMENT_LINK);
-}
-
-// ——————————————————————————————
-// ОПЛАТА ЧЕРЕЗ СБЕРБИЗНЕС (ЗАГЛУШКА)
-// ——————————————————————————————
-function handleSberPay() {
-  alert(
-    '⚙️ Оплата через СберБизнес\n\n' +
-    'Интеграция в процессе подключения.\n' +
-    'Для оплаты, пожалуйста, напишите в Telegram: @Ekaterina_K'
-  );
 }
 
 // ——————————————————————————————
