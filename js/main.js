@@ -15,27 +15,6 @@ window.addEventListener('load', () => {
 });
 
 // ═══════════════════════════════════════════
-// КОНФИГУРАЦИЯ
-// ═══════════════════════════════════════════
-
-const CONFIG = {
-
-  // Ссылка на оплату DIKIDI
-  DIKIDI_PAYMENT_LINK: 'https://dkd.su/2042105/s/22074950',
-
-  // Таймауты
-  FETCH_TIMEOUT: 10000,
-
-  // Разрешённые домены для внешних ссылок
-  ALLOWED_EXTERNAL_DOMAINS: [
-    't.me',
-    'pay.dikidi.ru',
-    'dikidi.ru',
-    'dkd.su'
-  ]
-};
-
-// ═══════════════════════════════════════════
 // БУРГЕР-МЕНЮ
 // ═══════════════════════════════════════════
 const burgerBtn  = document.getElementById('burger-btn');
