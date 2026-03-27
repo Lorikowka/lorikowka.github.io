@@ -3,18 +3,6 @@
  */
 
 // ═══════════════════════════════════════════
-// АВТОСКРОЛЛ К ОПЛАТЕ ПРИ ЗАГРУЗКЕ
-// ═══════════════════════════════════════════
-window.addEventListener('load', () => {
-  const payment = document.querySelector('#payment');
-  if (payment) {
-    setTimeout(() => {
-      payment.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 400);
-  }
-});
-
-// ═══════════════════════════════════════════
 // БУРГЕР-МЕНЮ
 // ═══════════════════════════════════════════
 const burgerBtn  = document.getElementById('burger-btn');
